@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import invariant from "ts-invariant";
-import ethers from "ethers";
+import * as ethers from "ethers";
 import chains from "../../../../chains.json";
 import { CONTRACT_ADDRESSES } from "../../../../src/config";
 import CarolusNFTV1Artifact from "../../../../src/abi/CarolusNFTV1.json";
@@ -59,12 +59,13 @@ export default async function handler(
       return res.status(404).json({ error: true, data: "not found" });
     }
 
-    const contract = getContract(tokenId, chain.rpc[0]);
+    const contract = getContract(chainId, chain.rpc[0]);
     const metadata = await getMetadata(tokenId, contract);
 
     res.status(200).json(metadata);
   } catch (err) {
-    res.status(400).json({ error: true, data: JSON.stringify(err) });
+    console.log(err)
+    res.status(400).json({ error: true, data: (err as any)?.message });
   }
 }
 
@@ -73,7 +74,8 @@ function getContract(chainId: string, rpc?: string): CarolusNFTV1 {
     throw new Error("missing rpc");
   }
 
-  const provider = new ethers.providers.JsonRpcProvider({ url: rpc }, chainId);
+  // TODO not sure why it is not accepting then chainId
+  const provider = new ethers.providers.JsonRpcProvider({ url: rpc });
 
   const address = CONTRACT_ADDRESSES[chainId];
   if (!address) {
