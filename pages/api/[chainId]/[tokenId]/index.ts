@@ -64,7 +64,7 @@ export default async function handler(
 
     res.status(200).json(metadata);
   } catch (err) {
-    res.status(400).json({ error: true, data: err });
+    res.status(400).json({ error: true, data: JSON.stringify(err) });
   }
 }
 
