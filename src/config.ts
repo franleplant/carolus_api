@@ -1,4 +1,4 @@
 export const CONTRACT_ADDRESSES: Record<string, string> = {
-  "137": "",
+  "137": "0xCc20821468742EaA73e0283bdE8f20d9B7C81Ab8",
   "80001": "0x207e0EBA585f10E25C60EDCd84b51cE2f4561896",
 };
